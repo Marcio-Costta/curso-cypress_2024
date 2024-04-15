@@ -1,0 +1,17 @@
+/// <reference types="cypress" />
+
+describe('Fixture tests' , () => {
+    it('Get data form fixture file' , function () {
+        cy.visit('https://www.wcaquino.me/cypress/componentes.html');
+        cy.fixture('UserData').as('usuario').then(() => {
+            cy.get('#formNome').type(this.usuario.nome);
+            cy.get('[data-cy="dataSobrenome"]').type(this.usuario.sobrenome);
+            cy.get(`[name=formSexo][value=${this.usuario.sexo}]`).click().should('be.checked')
+            cy.get('#formComidaFrango').click().should('be.checked')
+            cy.get('[data-test="dataEscolaridade"]').select(this.usuario.escolaridade)
+            cy.get('[data-testid="dataEsportes"]').select(this.usuario.esportes)
+        })
+        cy.get('#formCadastrar').click();
+        cy.get('#resultado > :nth-child(1)').should('contain' , 'Cadastrado!');
+    })
+})
